@@ -1,0 +1,52 @@
+{% extends 'transaction/base.html' %}
+
+{% block content %}
+
+<h1>1. Общий расход на указанный товар/услугу:</h1>
+<form method="POST" action="{% url 'specialcalculation1' %}">
+  {% csrf_token %}
+  <label for="calculation1input">Наименование товара/услуги:</label>
+  <input type="text" name="calculation1input">
+  <button type="submit">Рассчитать</button>
+</form>
+<h1></h1>
+{{ multidash }}
+
+{% if input_name_value %}
+<p><b>{{ input_name_value }}</b> ( ОБЩИЕ РАСХОДЫ: <b>{{ sumpricequantity }}</b> руб.,  КОЛ-ВО:
+  <b>{{ sumquantity }}</b> е.и.,  СР.ЦЕНА: <b>{{ averageprice }}</b> руб. за е.и.,
+  ТЕМП РАСХОДА: <b>{{ speedexp }}</b> руб. в день,  СРЕДНЕЕ ПОТРЕБЛЕНИЕ: <b>{{ consumptionrate }}</b> е.и. в день )</p>
+{% endif %}
+
+{{ multidash }}
+
+{% if searched_expnames %}
+    <h2>Детализация:</h2>
+    <table>
+
+        <tr>
+            <th>Дата приобретения:</th>
+            <th>Наименование (категория):</th>
+            <th>Краткое описание:</th>
+            <th>Количество:</th>
+            <th>Цена:</th>
+            <th>Общая стоимость:</th>
+        </tr>
+
+        {% for searched_expname in searched_expnames %}
+
+        <tr style="text-align: center;">
+            <td style="font-size: 20px;"><b>{{ searched_expname.date }}</b></td>
+            <td><b>{{ searched_expname.name }} ({{ searched_expname.category.first }})</b></td>
+            <td><b>{{ searched_expname.description }}</b></td>
+            <td><b>{{ searched_expname.quantity | floatformat:2 }} {{ searched_expname.meter.first }}</b></td>
+            <td style="font-size: 12px;"><b style="font-size: 17px;">{{ searched_expname.price | floatformat:2 }} руб за {{ searched_expname.meter.first }}</b></td>
+            <td style="font-size: 12px;"><b style="font-size: 17px;">{{ searched_expname.total_cost | floatformat:2 }} руб.</b></td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+{% endif %}
+
+{% endblock %}

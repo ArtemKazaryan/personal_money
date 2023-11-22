@@ -1,0 +1,314 @@
+{% extends 'transaction/base.html' %}
+
+{% block content %}
+
+{% if pk == 3 %}
+    <h1>{{ pk }}. Расходы по наименованию товаров/услуг:</h1>
+
+    <table>
+      <tr>
+        <th>Наименование товара/услуги:</th>
+        <th>Название категории:</th>
+        <th>Общий расход на товар/услугу,руб.:</th>
+        <th>Количество измерителя:</th>
+        <th>Средняя цена закупки товара/услуги:</th>
+          <th>Среднее потребление:</th>
+        <th>Темп расхода,руб.в день:</th>
+          <th>Темп расхода,руб.за 30 дней:</th>
+          <th>Доля от общего расхода:</th>
+      </tr>
+        {% for item in queryset %}
+            <tr style="text-align: center;">
+              <td style="font-size: 20px;"><b>{{ item.name }}</b></td>
+              <td>{{ item.categories }}</td>
+              <td><b>{{ item.totalexp | floatformat:2 }}</b></td>
+              <td><b>{{ item.totalquant | floatformat:2 }}</b> {{ item.meter }}</td>
+              <td style="font-size: 10px;"><b style="font-size: 17px;">{{ item.averpr | floatformat:2 }}</b>руб.за {{ item.meter }}</td>
+                <td style="font-size: 12px;"><b style="font-size: 17px;">{{ item.consumptionrate | floatformat:2 }}</b> {{ item.meter }} в день</td>
+              <td><b>{{ item.speedexp | floatformat:2 }}</b></td>
+                <td><b>{{ item.speed30exp | floatformat:2 }}</b></td>
+                <td style="font-size: 12px;"><b style="font-size: 16px;">{{ item.percentexp | floatformat:3 }}</b>%</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <p style="font-size: 12px;"><b style="font-size: 17px;">Суммарный расход по всем наименованиям = {{ sumexp }} руб. (100%)</b>%</p>
+{{ multidash2 }}
+
+{% elif pk == 4 %}
+    <h1>{{ pk }}. Расходы по категориям товаров/услуг:</h1>
+
+    <table>
+      <tr>
+        <th>Категория товара/услуги:</th>
+        <th>Общий расход по категории,руб.:</th>
+        <th>Темп расхода,руб.в день:</th>
+          <th>Темп расхода,руб.за 30 дней:</th>
+        <th>Доля от общего расхода:</th>
+      </tr>
+        {% for item in queryset %}
+            <tr style="text-align: center;">
+              <td style="font-size: 20px;"><b>{{ item.categories }}</b></td>
+              <td><b>{{ item.totalexp | floatformat:2 }}</b></td>
+              <td><b>{{ item.speedexp | floatformat:2 }}</b></td>
+                <td><b>{{ item.speed30exp | floatformat:2 }}</b></td>
+              <td style="font-size: 12px;"><b style="font-size: 17px;">{{ item.percentexp | floatformat:3 }}</b>%</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <p style="font-size: 12px;"><b style="font-size: 17px;">Суммарный расход по всем категориям = {{ sumexp }} руб. (100%)</b>%</p>
+{{ multidash2 }}
+
+{% elif pk == 5 %}
+    <h1>{{ pk }}. Доходы по наименованию источников:</h1>
+    <table>
+      <tr>
+        <th>Наименование источника дохода:</th>
+        <th>Общий доход по источнику,руб.:</th>
+        <th>Темп дохода,руб.в день:</th>
+          <th>Темп дохода,руб.за 30 дней:</th>
+        <th>Доля от общего дохода:</th>
+      </tr>
+        {% for item in queryset %}
+            <tr style="text-align: center;">
+              <td style="font-size: 20px;"><b>{{ item.name }}</b> <b style="font-size: 15px;">({{ item.incometypes }})</b></td>
+              <td><b>{{ item.totalpro | floatformat:2}}</b></td>
+              <td><b>{{ item.speedpro | floatformat:2 }}</b></td>
+                <td><b>{{ item.speed30pro | floatformat:2 }}</b></td>
+              <td style="font-size: 12px;"><b style="font-size: 17px;">{{ item.percentpro | floatformat:3 }}</b>%</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <p style="font-size: 12px;"><b style="font-size: 17px;">Суммарный доход по всем наименованиям = {{ sumpro }} руб. (100%)</b>%</p>
+{{ multidash2 }}
+
+{% elif pk == 6 %}
+    <h1>{{ pk }}. Доходы по категориям источников:</h1>
+    <table>
+      <tr>
+        <th>Категория источника дохода:</th>
+        <th>Общий доход по категории,руб.:</th>
+        <th>Темп дохода,руб.в день:</th>
+          <th>Темп дохода,руб.за 30 дней:</th>
+        <th>Доля от общего дохода:</th>
+      </tr>
+        {% for item in queryset %}
+            <tr style="text-align: center;">
+              <td style="font-size: 20px;"><b>{{ item.incometypes }}</b></td>
+              <td><b>{{ item.totalpro | floatformat:2}}</b></td>
+              <td><b>{{ item.speedpro | floatformat:2 }}</b></td>
+                <td><b>{{ item.speed30pro | floatformat:2 }}</b></td>
+              <td style="font-size: 12px;"><b style="font-size: 17px;">{{ item.percentpro | floatformat:3 }}</b>%</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <p style="font-size: 12px;"><b style="font-size: 17px;">Суммарный доход по всем категориям = {{ sumpro }} руб. (100%)</b>%</p>
+{{ multidash2 }}
+
+{% elif pk == 7 %}
+    <h1>{{ pk }}. Доходы и расходы по наименованиям (объединение таблиц 3 и 5):</h1>
+    <h2> Доходы по наименованию источников (из таблицы 5):</h2>
+       <table>
+         <tr>
+           <th>Наименование источника дохода:</th>
+           <th>Общий доход по источнику,руб.:</th>
+           <th>Темп дохода,руб.в день:</th>
+              <th>Темп дохода,руб.за 30 дней:</th>
+           <th>Доля от общего дохода:</th>
+         </tr>
+           {% for item in queryset1 %}
+               <tr style="text-align: center;">
+                 <td style="font-size: 20px;"><b>{{ item.name }}</b> <b style="font-size: 15px;">({{ item.incometypes }})</b></td>
+                 <td><b>{{ item.totalpro | floatformat:2}}</b></td>
+                 <td><b>{{ item.speedpro | floatformat:2 }}</b></td>
+                   <td><b>{{ item.speed30pro | floatformat:2 }}</b></td>
+                 <td style="font-size: 12px;"><b style="font-size: 17px;">{{ item.percentpro | floatformat:3 }}</b>%</td>
+               </tr>
+           {% endfor %}
+       </table>
+        <p style="font-size: 12px;"><b style="font-size: 17px;">Суммарный доход по всем наименованиям = {{ sumpro }} руб. (100%)</b>%</p>
+
+    <h2> </h2>
+{{ multidash2 }}
+    <h2> Расходы по наименованию товаров/услуг (из таблицы 3):</h2>
+
+       <table>
+           <tr>
+               <th>Наименование товара/услуги:</th>
+               <th>Название категории:</th>
+               <th>Общий расход на товар/услугу,руб.:</th>
+               <th>Количество измерителя:</th>
+               <th>Средняя цена закупки товара/услуги:</th>
+               <th>Среднее потребление:</th>
+               <th>Темп расхода,руб.в день:</th>
+               <th>Темп расхода,руб.за 30 дней:</th>
+               <th>Доля от общего расхода:</th>
+           </tr>
+           {% for item in queryset2 %}
+           <tr style="text-align: center;">
+               <td style="font-size: 14px;"><b>{{ item.name }}</b></td>
+               <td>{{ item.categories }}</td>
+               <td><b>{{ item.totalexp | floatformat:2}}</b></td>
+               <td><b>{{ item.totalquant | floatformat:2 }}</b> {{ item.meter }}</td>
+               <td style="font-size: 10px;"><b style="font-size: 16px;">{{ item.averpr | floatformat:2 }}</b>руб.за {{ item.meter }}</td>
+               <td style="font-size: 12px;"><b style="font-size: 16px;">{{ item.consumptionrate | floatformat:2 }}</b> {{ item.meter }} в день</td>
+               <td><b>{{ item.speedexp | floatformat:2 }}</b></td>
+               <td><b>{{ item.speed30exp | floatformat:2 }}</b></td>
+               <td style="font-size: 12px;"><b style="font-size: 16px;">{{ item.percentexp | floatformat:3 }}</b>%</td>
+           </tr>
+           {% endfor %}
+       </table>
+        <p style="font-size: 12px;"><b style="font-size: 17px;">Суммарный расход по всем наименованиям = {{ sumexp }} руб. (100%)</b>%</p>
+{{ multidash2 }}
+
+{% elif pk == 8 %}
+       <h1>{{ pk }}. Доходы и расходы по категориям (объединение таблиц 4 и 6):</h1>
+       <h2> Доходы по категориям (из таблицы 6):</h2>
+       <table>
+           <tr>
+               <th>Категория источника дохода:</th>
+               <th>Общий доход по категории,руб.:</th>
+               <th>Темп дохода,руб.в день:</th>
+               <th>Темп дохода,руб.за 30 дней:</th>
+               <th>Доля от общего дохода:</th>
+           </tr>
+           {% for item in queryset1 %}
+           <tr style="text-align: center;">
+               <td style="font-size: 20px;"><b>{{ item.incometypes }}</b></td>
+               <td><b>{{ item.totalpro | floatformat:2}}</b></td>
+               <td><b>{{ item.speedpro | floatformat:2 }}</b></td>
+               <td><b>{{ item.speed30pro | floatformat:2 }}</b></td>
+               <td style="font-size: 12px;"><b style="font-size: 17px;">{{ item.percentpro | floatformat:3 }}</b>%</td>
+           </tr>
+           {% endfor %}
+       </table>
+        <p style="font-size: 12px;"><b style="font-size: 17px;">Суммарный доход по всем категориям = {{ sumpro }} руб. (100%)</b>%</p>
+
+        <h2> </h2>
+{{ multidash2 }}
+        <h2> Расходы по категориям (из таблицы 4):</h2>
+
+       <table>
+         <tr>
+           <th>Категория товара/услуги:</th>
+           <th>Общий расход по категории,руб.:</th>
+           <th>Темп расхода,руб.в день:</th>
+             <th>Темп расхода,руб.за 30 дней:</th>
+           <th>Доля от общего расхода:</th>
+         </tr>
+           {% for item in queryset2 %}
+               <tr style="text-align: center;">
+                 <td style="font-size: 20px;"><b>{{ item.categories }}</b></td>
+                 <td><b>{{ item.totalexp | floatformat:2}}</b></td>
+                 <td><b>{{ item.speedexp | floatformat:2 }}</b></td>
+                   <td><b>{{ item.speed30exp | floatformat:2 }}</b></td>
+                 <td style="font-size: 12px;"><b style="font-size: 17px;">{{ item.percentexp | floatformat:3 }}</b>%</td>
+               </tr>
+           {% endfor %}
+       </table>
+        <p style="font-size: 12px;"><b style="font-size: 17px;">Суммарный расход по всем категориям = {{ sumexp }} руб. (100%)</b>%</p>
+{{ multidash2 }}
+
+{% elif pk == 9 %}
+    <h1>{{ pk }}. Доходы и расходы по наименованиям и категориям (таблицы 3, 4, 5 и 6):</h1>
+    <h2> Доходы по наименованию источников (из таблицы 5):</h2>
+       <table>
+         <tr>
+           <th>Наименование источника дохода:</th>
+           <th>Общий доход по источнику,руб.:</th>
+           <th>Темп дохода,руб.в день:</th>
+              <th>Темп дохода,руб.за 30 дней:</th>
+           <th>Доля от общего дохода:</th>
+         </tr>
+           {% for item in queryset1 %}
+               <tr style="text-align: center;">
+                 <td style="font-size: 20px;"><b>{{ item.name }}</b> <b style="font-size: 15px;">({{ item.incometypes }})</b></td>
+                 <td><b>{{ item.totalpro | floatformat:2}}</b></td>
+                 <td><b>{{ item.speedpro | floatformat:2 }}</b></td>
+                   <td><b>{{ item.speed30pro | floatformat:2 }}</b></td>
+                 <td style="font-size: 12px;"><b style="font-size: 17px;">{{ item.percentpro | floatformat:3 }}</b>%</td>
+               </tr>
+           {% endfor %}
+       </table>
+        <p style="font-size: 12px;"><b style="font-size: 17px;">Суммарный доход по всем наименованиям = {{ sumpro }} руб. (100%)</b>%</p>
+{{ multidash2 }}
+       <h2> Доходы по категориям источников(из таблицы 6):</h2>
+       <table>
+           <tr>
+               <th>Категория источника дохода:</th>
+               <th>Общий доход по категории,руб.:</th>
+               <th>Темп дохода,руб.в день:</th>
+               <th>Темп дохода,руб.за 30 дней:</th>
+               <th>Доля от общего дохода:</th>
+           </tr>
+           {% for item in queryset3 %}
+           <tr style="text-align: center;">
+               <td style="font-size: 20px;"><b>{{ item.incometypes }}</b></td>
+               <td><b>{{ item.totalpro | floatformat:2}}</b></td>
+               <td><b>{{ item.speedpro | floatformat:2 }}</b></td>
+               <td><b>{{ item.speed30pro | floatformat:2 }}</b></td>
+               <td style="font-size: 12px;"><b style="font-size: 17px;">{{ item.percentpro | floatformat:3 }}</b>%</td>
+           </tr>
+           {% endfor %}
+       </table>
+        <p style="font-size: 12px;"><b style="font-size: 17px;">Суммарный доход по всем категориям = {{ sumpro }} руб. (100%)</b>%</p>
+
+    <h2> </h2>
+{{ multidash2 }}
+    <h2> Расходы по наименованию товаров/услуг (из таблицы 3):</h2>
+
+       <table>
+           <tr>
+               <th>Наименование товара/услуги:</th>
+               <th>Название категории:</th>
+               <th>Общий расход на товар/услугу,руб.:</th>
+               <th>Количество измерителя:</th>
+               <th>Средняя цена закупки товара/услуги:</th>
+               <th>Среднее потребление:</th>
+               <th>Темп расхода,руб.в день:</th>
+               <th>Темп расхода,руб.за 30 дней:</th>
+               <th>Доля от общего расхода:</th>
+           </tr>
+           {% for item in queryset2 %}
+           <tr style="text-align: center;">
+               <td style="font-size: 14px;"><b>{{ item.name }}</b></td>
+               <td>{{ item.categories }}</td>
+               <td><b>{{ item.totalexp | floatformat:2}}</b></td>
+               <td><b>{{ item.totalquant | floatformat:2 }}</b> {{ item.meter }}</td>
+               <td style="font-size: 10px;"><b style="font-size: 16px;">{{ item.averpr | floatformat:2 }}</b>руб.за {{ item.meter }}</td>
+               <td style="font-size: 12px;"><b style="font-size: 16px;">{{ item.consumptionrate | floatformat:2 }}</b> {{ item.meter }} в день</td>
+               <td><b>{{ item.speedexp | floatformat:2 }}</b></td>
+               <td><b>{{ item.speed30exp | floatformat:2 }}</b></td>
+               <td style="font-size: 12px;"><b style="font-size: 16px;">{{ item.percentexp | floatformat:3 }}</b>%</td>
+           </tr>
+           {% endfor %}
+       </table>
+        <p style="font-size: 12px;"><b style="font-size: 17px;">Суммарный расход по всем наименованиям = {{ sumexp }} руб. (100%)</b>%</p>
+{{ multidash2 }}
+        <h2> Расходы по категориям товаров/услуг(из таблицы 4):</h2>
+
+       <table>
+         <tr>
+           <th>Категория товара/услуги:</th>
+           <th>Общий расход по категории,руб.:</th>
+           <th>Темп расхода,руб.в день:</th>
+             <th>Темп расхода,руб.за 30 дней:</th>
+           <th>Доля от общего расхода:</th>
+         </tr>
+           {% for item in queryset4 %}
+               <tr style="text-align: center;">
+                 <td style="font-size: 20px;"><b>{{ item.categories }}</b></td>
+                 <td><b>{{ item.totalexp | floatformat:2}}</b></td>
+                 <td><b>{{ item.speedexp | floatformat:2 }}</b></td>
+                   <td><b>{{ item.speed30exp | floatformat:2 }}</b></td>
+                 <td style="font-size: 12px;"><b style="font-size: 17px;">{{ item.percentexp | floatformat:3 }}</b>%</td>
+               </tr>
+           {% endfor %}
+       </table>
+        <p style="font-size: 12px;"><b style="font-size: 17px;">Суммарный расход по всем категориям = {{ sumexp }} руб. (100%)</b>%</p>
+{{ multidash2 }}
+{% endif %}
+{{ show }}
+{% endblock %}
+
+
+

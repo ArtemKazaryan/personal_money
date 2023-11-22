@@ -1,0 +1,12 @@
+{% extends 'transaction/base.html' %}
+
+{% block content %}
+
+<ul>
+    <li><a href="{% url 'specialcalculation1' %}">1. Общий расход на указанный товар/услугу (с детализацией по датам)</a></li>
+    <li><a href="{% url 'specialcalculation2' %}">2. Общий доход от указанного источника (с детализацией по датам)</a></li>
+    {% for func in funcnames %}
+    <li><a href="{% url 'specialcalculation' forloop.counter %}">{{ func }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
